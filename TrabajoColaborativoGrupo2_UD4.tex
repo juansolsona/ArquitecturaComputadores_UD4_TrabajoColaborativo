@@ -238,18 +238,22 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {1,1,1,1, 1,1,0,0, 0,0,0,0, 0,0,0,0}%
-  {0/0/kgroup1, 0/1/kgroup1, 0/2/kgroup1, 0/3/kgroup1}
+  {%
+    \karnaughGrupo{0}{0}{1}{4}{kgroup1}% Rojo: fila AB=00 completa
+  }
 \caption{Grupo 1: $\bar{A}\bar{B}$ (4 celdas, fila AB=00)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {1,1,1,1, 1,1,0,0, 0,0,0,0, 0,0,0,0}%
-  {0/0/kgroup1, 0/1/kgroup1, 0/2/kgroup1, 0/3/kgroup1,
-   0/0/kgroup2, 0/1/kgroup2, 1/0/kgroup2, 1/1/kgroup2}
+  {%
+    \karnaughGrupo{0}{0}{1}{4}{kgroup1}% Rojo: fila AB=00 completa
+    \karnaughGrupo{0}{0}{2}{2}{kgroup2}% Verde: filas 0-1, cols 0-1
+  }
 \caption{Grupos identificados: Grupo 1 (rojo) = $\bar{A}\bar{B}$, Grupo 2 (verde) = $\bar{A}\bar{C}$}
 \end{figure}
 
@@ -407,33 +411,45 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {3/0/kgroup1, 3/1/kgroup1}
+  {%
+    \karnaughGrupo{3}{0}{1}{2}{kgroup1}% Rojo: fila 3, cols 0-1
+  }
 \caption{Grupo 1: $A\bar{B}\bar{C}$ (2 celdas, AB=10, CD=00,01)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {1/2/kgroup3, 1/3/kgroup3}
+  {%
+    \karnaughGrupo{1}{2}{1}{2}{kgroup3}% Azul: fila 1, cols 2-3
+  }
 \caption{Grupo 2: $\bar{A}BC$ (2 celdas, AB=01, CD=11,10)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {3/0/kgroup2, 3/3/kgroup2}
+  {%
+    \karnaughGrupo{3}{0}{1}{1}{kgroup2}% Verde: celda (3,0)
+    \karnaughGrupo{3}{3}{1}{1}{kgroup2}% Verde: celda (3,3) - wrap-around
+  }
 \caption{Grupo 3: $A\bar{B}\bar{D}$ (2 celdas, AB=10, CD=00 y CD=10 — adyacentes por wrap-around)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {3/0/kgroup1, 3/1/kgroup1, 1/2/kgroup3, 1/3/kgroup3, 3/0/kgroup2, 3/3/kgroup2}
+  {%
+    \karnaughGrupo{3}{0}{1}{2}{kgroup1}% Rojo: A¬B¬C
+    \karnaughGrupo{1}{2}{1}{2}{kgroup3}% Azul: ¬ABC
+    \karnaughGrupo{3}{0}{1}{1}{kgroup2}% Verde: celda (3,0)
+    \karnaughGrupo{3}{3}{1}{1}{kgroup2}% Verde: celda (3,3)
+  }
 \caption{Todos los grupos: Rojo = $A\bar{B}\bar{C}$, Azul = $\bar{A}BC$, Verde = $A\bar{B}\bar{D}$}
 \end{figure}
 
@@ -593,25 +609,32 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,0,0, 1,1,1,1, 0,0,1,0}%
-  {2/0/kgroup1, 2/1/kgroup1, 2/2/kgroup1, 2/3/kgroup1}
+  {%
+    \karnaughGrupo{2}{0}{1}{4}{kgroup1}% Rojo: fila AB=11 completa
+  }
 \caption{Grupo 1: $AB$ (4 celdas, fila AB=11 completa)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,0,0, 1,1,1,1, 0,0,1,0}%
-  {2/2/kgroup2, 3/2/kgroup2}
+  {%
+    \karnaughGrupo{2}{2}{2}{1}{kgroup2}% Verde: col 2, filas 2-3
+  }
 \caption{Grupo 2: $ACD$ (2 celdas, CD=11, A=1)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\karnaughCuatro{AB}{CD}%
+\karnaughConGrupos{AB}{CD}%
   {0,0,0,0, 0,0,0,0, 1,1,1,1, 0,0,1,0}%
-  {2/0/kgroup1, 2/1/kgroup1, 2/2/kgroup1, 2/3/kgroup1, 3/2/kgroup2}
+  {%
+    \karnaughGrupo{2}{0}{1}{4}{kgroup1}% Rojo: AB (fila AB=11)
+    \karnaughGrupo{2}{2}{2}{1}{kgroup2}% Verde: ACD (col 2, filas 2-3)
+  }
 \caption{Todos los grupos: Rojo = $AB$, Verde = $ACD$}
 \end{figure}
 

@@ -1,23 +1,34 @@
-% === COLORES PREDEFINIDOS PARA AGRUPACIONES ===
-\definecolor{kgroup1}{RGB}{255,200,200}  % Rojo claro
-\definecolor{kgroup2}{RGB}{200,255,200}  % Verde claro
-\definecolor{kgroup3}{RGB}{200,200,255}  % Azul claro
-\definecolor{kgroup4}{RGB}{255,255,180}  % Amarillo claro
-\definecolor{kgroup5}{RGB}{255,200,255}  % Magenta claro
-\definecolor{kgroup6}{RGB}{200,255,255}  % Cian claro
+% === COLORES PARA BORDES DE AGRUPACIONES ===
+% Colores más intensos para bordes visibles
+\definecolor{kgroup1}{RGB}{220,50,50}    % Rojo
+\definecolor{kgroup2}{RGB}{50,180,50}    % Verde
+\definecolor{kgroup3}{RGB}{50,50,220}    % Azul
+\definecolor{kgroup4}{RGB}{200,150,0}    % Amarillo/Naranja
+\definecolor{kgroup5}{RGB}{180,50,180}   % Magenta
+\definecolor{kgroup6}{RGB}{0,180,180}    % Cian
 
-% === MACRO PRINCIPAL PARA KARNAUGH DE 4 VARIABLES ===
-% Uso: \karnaughCuatro{AB}{CD}{v0,v1,...,v15}{fila/col/color, ...}
-\newcommand{\karnaughCuatro}[4]{%
+% === MACRO PARA DIBUJAR UN GRUPO CON BORDE ===
+% Uso: \karnaughGrupo{fila_inicio}{col_inicio}{filas}{columnas}{color}
+% Las coordenadas son 0-indexed (fila 0-3, col 0-3)
+\newcommand{\karnaughGrupo}[5]{%
+  % #1 = fila inicio, #2 = col inicio, #3 = num filas, #4 = num cols, #5 = color
+  \draw[#5, line width=2.5pt, rounded corners=6pt]
+    (#2*\cellsize + 0.08, -#1*\cellsize - 0.08) 
+    rectangle 
+    ++(#4*\cellsize - 0.16, -#3*\cellsize + 0.16);
+}
+
+% === MACRO PRINCIPAL PARA KARNAUGH DE 4 VARIABLES CON GRUPOS ===
+% Uso: \karnaughConGrupos{AB}{CD}{v0,v1,...,v15}{código TikZ para grupos}
+% El cuarto parámetro permite dibujar grupos con \karnaughGrupo
+\newcommand{\karnaughConGrupos}[4]{%
 \begin{tikzpicture}[scale=0.8]
   \def\cellsize{1.2}
   
-  % Dibujar celdas con colores de fondo PRIMERO
-  \foreach \row/\col/\bgcolor in {#4} {
-    \fill[\bgcolor] (\col*\cellsize, -\row*\cellsize) rectangle ++(\cellsize,-\cellsize);
-  }
+  % Grid principal (fondo blanco)
+  \fill[white] (0,0) rectangle (4*\cellsize,-4*\cellsize);
   
-  % Grid principal
+  % Líneas del grid
   \draw[thick] (0,0) rectangle (4*\cellsize,-4*\cellsize);
   \draw (0,-\cellsize) -- (4*\cellsize,-\cellsize);
   \draw (0,-2*\cellsize) -- (4*\cellsize,-2*\cellsize);
@@ -28,7 +39,7 @@
   
   % Etiqueta de variables (filas)
   \node[font=\bfseries] at (-0.6, -2*\cellsize) {#1};
-  % Etiqueta de variables (columnas)
+  % Etiqueta de variables (columnas)  
   \node[font=\bfseries] at (2*\cellsize, 0.6) {#2};
   
   % Código Gray para columnas (CD)
@@ -49,10 +60,62 @@
     \pgfmathtruncatemacro{\col}{mod(\i,4)}
     \node at (\col*\cellsize + 0.5*\cellsize, -\row*\cellsize - 0.5*\cellsize) {\val};
   }
+  
+  % Dibujar los grupos (bordes coloreados) ENCIMA del grid
+  #4
 \end{tikzpicture}%
 }
 
-% === MACRO SIMPLIFICADA SIN COLORES ===
+% === MACRO SIMPLIFICADA SIN GRUPOS ===
 \newcommand{\karnaughSimple}[3]{%
-  \karnaughCuatro{#1}{#2}{#3}{}%
+  \karnaughConGrupos{#1}{#2}{#3}{}%
+}
+
+% === MACRO LEGACY (compatibilidad con el formato anterior) ===
+% Convierte el formato antiguo fila/col/color a bordes
+% NOTA: Esta macro mantiene compatibilidad pero usa colores de fondo
+\newcommand{\karnaughCuatro}[4]{%
+\begin{tikzpicture}[scale=0.8]
+  \def\cellsize{1.2}
+  
+  % Dibujar celdas con colores de fondo (formato legacy)
+  \foreach \row/\col/\bgcolor in {#4} {
+    \fill[\bgcolor, opacity=0.3] (\col*\cellsize, -\row*\cellsize) rectangle ++(\cellsize,-\cellsize);
+    \draw[\bgcolor, line width=2pt, rounded corners=4pt] 
+      (\col*\cellsize + 0.06, -\row*\cellsize - 0.06) 
+      rectangle ++(\cellsize - 0.12, -\cellsize + 0.12);
+  }
+  
+  % Grid principal
+  \draw[thick] (0,0) rectangle (4*\cellsize,-4*\cellsize);
+  \draw (0,-\cellsize) -- (4*\cellsize,-\cellsize);
+  \draw (0,-2*\cellsize) -- (4*\cellsize,-2*\cellsize);
+  \draw (0,-3*\cellsize) -- (4*\cellsize,-3*\cellsize);
+  \draw (\cellsize,0) -- (\cellsize,-4*\cellsize);
+  \draw (2*\cellsize,0) -- (2*\cellsize,-4*\cellsize);
+  \draw (3*\cellsize,0) -- (3*\cellsize,-4*\cellsize);
+  
+  % Etiqueta de variables
+  \node[font=\bfseries] at (-0.6, -2*\cellsize) {#1};
+  \node[font=\bfseries] at (2*\cellsize, 0.6) {#2};
+  
+  % Código Gray para columnas
+  \node at (0.5*\cellsize, 0.25) {00};
+  \node at (1.5*\cellsize, 0.25) {01};
+  \node at (2.5*\cellsize, 0.25) {11};
+  \node at (3.5*\cellsize, 0.25) {10};
+  
+  % Código Gray para filas
+  \node at (-0.35, -0.5*\cellsize) {00};
+  \node at (-0.35, -1.5*\cellsize) {01};
+  \node at (-0.35, -2.5*\cellsize) {11};
+  \node at (-0.35, -3.5*\cellsize) {10};
+  
+  % Colocar valores
+  \foreach \val [count=\i from 0] in {#3} {
+    \pgfmathtruncatemacro{\row}{int(\i/4)}
+    \pgfmathtruncatemacro{\col}{mod(\i,4)}
+    \node at (\col*\cellsize + 0.5*\cellsize, -\row*\cellsize - 0.5*\cellsize) {\val};
+  }
+\end{tikzpicture}%
 }
