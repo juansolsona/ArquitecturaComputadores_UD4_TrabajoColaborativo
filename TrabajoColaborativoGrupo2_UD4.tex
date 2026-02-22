@@ -249,8 +249,8 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \karnaughCuatro{AB}{CD}%
   {1,1,1,1, 1,1,0,0, 0,0,0,0, 0,0,0,0}%
   {0/0/kgroup1, 0/1/kgroup1, 0/2/kgroup1, 0/3/kgroup1,
-   1/0/kgroup2, 1/1/kgroup2}
-\caption{Grupos identificados: Grupo 1 (rojo) = $\bar{A}\bar{B}$, Grupo 2 (verde) = $\bar{A}B\bar{C}$}
+   0/0/kgroup2, 0/1/kgroup2, 1/0/kgroup2, 1/1/kgroup2}
+\caption{Grupos identificados: Grupo 1 (rojo) = $\bar{A}\bar{B}$, Grupo 2 (verde) = $\bar{A}\bar{C}$}
 \end{figure}
 
 \subsubsection*{Análisis de los grupos}
@@ -262,7 +262,7 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \hline
 1 (rojo) & 0, 1, 2, 3 & A=0, B=0 & $\bar{A}\bar{B}$ \\
 \hline
-2 (verde) & 4, 5 & A=0, B=1, C=0 & $\bar{A}B\bar{C}$ \\
+2 (verde) & 0, 1, 4, 5 & A=0, C=0 & $\bar{A}\bar{C}$ \\
 \hline
 \end{tabular}
 \end{center}
@@ -270,21 +270,20 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \textbf{Explicación del proceso:}
 \begin{itemize}
     \item \textbf{Grupo 1 (4 celdas):} Cubre toda la fila AB=00. Las variables C y D cambian de valor dentro del grupo, por lo que se eliminan. Solo A=0 y B=0 permanecen constantes, dando el término $\bar{A}\bar{B}$.
-    \item \textbf{Grupo 2 (2 celdas):} Cubre las posiciones donde AB=01 y CD=00,01. La variable D cambia, por lo que se elimina. Las variables constantes son A=0, B=1, C=0, dando el término $\bar{A}B\bar{C}$.
+    \item \textbf{Grupo 2 (4 celdas):} Cubre las columnas CD=00 y CD=01 en las filas AB=00 y AB=01. La variable B y la variable D cambian, por lo que se eliminan. Las variables constantes son A=0, C=0, dando el término $\bar{A}\bar{C}$.
 \end{itemize}
 
 \subsubsection*{Expresión simplificada de $S_1$}
 
 Sumando los términos de cada grupo:
 \[
-\boxed{S_1 = \bar{A}\bar{B} + \bar{A}B\bar{C}}
+\boxed{S_1 = \bar{A}\bar{B} + \bar{A}\bar{C}}
 \]
 
 Esta expresión puede simplificarse algebraicamente factorizando $\bar{A}$:
 \begin{align*}
-S_1 &= \bar{A}\bar{B} + \bar{A}B\bar{C} \\
-    &= \bar{A}(\bar{B} + B\bar{C}) \\
-    &= \bar{A}(\bar{B} + \bar{C}) \quad \text{(por absorción: } X + \bar{X}Y = X + Y\text{)}
+S_1 &= \bar{A}\bar{B} + \bar{A}\bar{C} \\
+    &= \bar{A}(\bar{B} + \bar{C})
 \end{align*}
 
 Por tanto, la expresión mínima es:
@@ -426,16 +425,16 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \centering
 \karnaughCuatro{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {3/3/kgroup2}
-\caption{Grupo 3: $A\bar{B}C\bar{D}$ (1 celda, AB=10, CD=10)}
+  {3/0/kgroup2, 3/3/kgroup2}
+\caption{Grupo 3: $A\bar{B}\bar{D}$ (2 celdas, AB=10, CD=00 y CD=10 — adyacentes por wrap-around)}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \karnaughCuatro{AB}{CD}%
   {0,0,0,0, 0,0,1,1, 0,0,0,0, 1,1,0,1}%
-  {3/0/kgroup1, 3/1/kgroup1, 1/2/kgroup3, 1/3/kgroup3, 3/3/kgroup2}
-\caption{Todos los grupos: Rojo = $A\bar{B}\bar{C}$, Azul = $\bar{A}BC$, Verde = $A\bar{B}C\bar{D}$}
+  {3/0/kgroup1, 3/1/kgroup1, 1/2/kgroup3, 1/3/kgroup3, 3/0/kgroup2, 3/3/kgroup2}
+\caption{Todos los grupos: Rojo = $A\bar{B}\bar{C}$, Azul = $\bar{A}BC$, Verde = $A\bar{B}\bar{D}$}
 \end{figure}
 
 \subsubsection*{Análisis de los grupos}
@@ -449,7 +448,7 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \hline
 2 (azul) & 6, 7 & A=0, B=1, C=1 & $\bar{A}BC$ \\
 \hline
-3 (verde) & 10 & A=1, B=0, C=1, D=0 & $A\bar{B}C\bar{D}$ \\
+3 (verde) & 8, 10 & A=1, B=0, D=0 & $A\bar{B}\bar{D}$ \\
 \hline
 \end{tabular}
 \end{center}
@@ -458,21 +457,20 @@ Buscamos los grupos más grandes posibles de 1s adyacentes (potencias de 2):
 \begin{itemize}
     \item \textbf{Grupo 1 (2 celdas):} Cubre las posiciones donde AB=10 y CD=00,01. La variable D cambia, por lo que se elimina. Las variables constantes son A=1, B=0, C=0, dando el término $A\bar{B}\bar{C}$.
     \item \textbf{Grupo 2 (2 celdas):} Cubre las posiciones donde AB=01 y CD=11,10. La variable D cambia, por lo que se elimina. Las variables constantes son A=0, B=1, C=1, dando el término $\bar{A}BC$.
-    \item \textbf{Grupo 3 (1 celda):} Celda aislada en AB=10, CD=10. No se puede agrupar con otras celdas. Todas las variables son constantes: A=1, B=0, C=1, D=0, dando el término $A\bar{B}C\bar{D}$.
+    \item \textbf{Grupo 3 (2 celdas):} Cubre las posiciones 8 (AB=10, CD=00) y 10 (AB=10, CD=10). Las columnas CD=00 y CD=10 son los extremos del orden Gray y son adyacentes por wrap-around (difieren solo en el bit C). La variable C cambia, por lo que se elimina. Las variables constantes son A=1, B=0, D=0, dando el término $A\bar{B}\bar{D}$.
 \end{itemize}
 
 \subsubsection*{Expresión simplificada de $S_3$}
 
 Sumando los términos de cada grupo:
 \[
-\boxed{S_3 = A\bar{B}\bar{C} + \bar{A}BC + A\bar{B}C\bar{D}}
+\boxed{S_3 = A\bar{B}\bar{C} + \bar{A}BC + A\bar{B}\bar{D}}
 \]
 
-Esta expresión puede simplificarse parcialmente factorizando $A\bar{B}$:
+Esta expresión puede simplificarse factorizando $A\bar{B}$:
 \begin{align*}
-S_3 &= A\bar{B}\bar{C} + \bar{A}BC + A\bar{B}C\bar{D} \\
-    &= A\bar{B}(\bar{C} + C\bar{D}) + \bar{A}BC \\
-    &= A\bar{B}(\bar{C} + \bar{D}) + \bar{A}BC \quad \text{(por absorción: } X + \bar{X}Y = X + Y\text{)}
+S_3 &= A\bar{B}\bar{C} + \bar{A}BC + A\bar{B}\bar{D} \\
+    &= A\bar{B}(\bar{C} + \bar{D}) + \bar{A}BC
 \end{align*}
 
 Por tanto, la expresión mínima es:
